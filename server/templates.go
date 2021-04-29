@@ -119,11 +119,12 @@ func loadTemplates(c webConfig, templatesDir string) (*templates, error) {
 	}
 
 	funcs := map[string]interface{}{
-		"issuer": func() string { return c.issuer },
-		"logo":   func() string { return c.logoURL },
-		"url":    func(reqPath, assetPath string) string { return relativeURL(issuerURL.Path, reqPath, assetPath) },
-		"lower":  strings.ToLower,
-		"extra":  func(k string) string { return c.extra[k] },
+		"issuer":     func() string { return c.issuer },
+		"logo":       func() string { return c.logoURL },
+		"url":        func(reqPath, assetPath string) string { return relativeURL(issuerURL.Path, reqPath, assetPath) },
+		"lower":      strings.ToLower,
+		"extra":      func(k string) string { return c.extra[k] },
+		"disclaimer": func(k string) interface{} { return template.HTML(k) },
 	}
 
 	tmpls, err := template.New("").Funcs(funcs).ParseFS(c.webFS, filenames...)
